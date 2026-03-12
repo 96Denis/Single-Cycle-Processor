@@ -5,14 +5,14 @@ module CPU (
     //outputs from all the modules
     wire [15:0] pc;
     wire [15:0] instruction;
-    wire [3:0]  mem_read_data;
+    wire [7:0]  mem_read_data;
     wire [3:0]  alu_opcode;
-    wire [3:0]  reg_data1;
-    wire [3:0]  reg_data2;
+    wire [7:0]  reg_data1;
+    wire [7:0]  reg_data2;
     wire [2:0]  reg_write_dest;
     wire [2:0]  reg_read_src1;
     wire [2:0]  reg_read_src2;
-    wire [4:0]  alu_result;
+    wire [8:0]  alu_result;
     wire        zero;
     wire        overflow;
     wire        carry;
@@ -51,7 +51,7 @@ module CPU (
         .read_reg1(reg_read_src1),
         .read_reg2(reg_read_src2),
         .write_reg(reg_write_dest),
-        .write_data(alu_result[3:0]), 
+        .write_data(alu_result[7:0]), 
         .write_enable(reg_write_enable),
         .read_data1(reg_data1),
         .read_data2(reg_data2)
@@ -69,7 +69,7 @@ module CPU (
 
     RAM RAM (
         .clk(clk),
-        .address({12'b0, alu_result[3:0]}), 
+        .address({8'b0, alu_result[7:0]}), 
         .write_data(reg_data2), 
         .mem_write(mem_write), 
         .mem_read(mem_read), 

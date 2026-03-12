@@ -1,8 +1,8 @@
 module ALU(
-    input [3:0] a,
-    input [3:0] b,
+    input [7:0] a,
+    input [7:0] b,
     input [3:0] opcode,
-    output reg [4:0] result,
+    output reg [8:0] result,
     output zero,
     output overflow,
     output carry
@@ -19,11 +19,11 @@ module ALU(
             4'b0110: result = a << b[2:0];     // SHL
             4'b0111: result = a >> b[2:0];     // SHR
             4'b1000: result = (a < b) ? 1 : 0; // SLT
-            default: result = 4'b0;
+            default: result = 9'b0;
         endcase
     end
 
-    assign zero = (result == 5'b0);
+    assign zero = (result == 9'b0);
     assign overflow = 1'b0; // impl later
     assign carry = 1'b0;    // impl later
 

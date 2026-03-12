@@ -1,27 +1,54 @@
-# 4-bit CPU in Verilog
+# 8-bit CPU in Verilog
 
-A simple 4-bit CPU implemented in Verilog as a portfolio project.
+A simple 8-bit single-cycle CPU implemented in Verilog as a portfolio project.
+Built from scratch, module by module, with individual testbenches for each component.
 
 ## Architecture
-- 4-bit data path
+- 8-bit data path
 - 16-bit instruction format
-- 8 general-purpose registers
+- 8 general-purpose registers (R0–R7)
 - Harvard architecture (separate instruction and data memory)
+- Single-cycle execution
+
+## Block Diagram
+```
+        clk, rst
+           |
+    [Program Counter] --pc--> [ROM] --instruction-->  [Decoder]
+                                                          |
+                                          alu_opcode, reg_dst,
+                                          reg_src1, reg_src2,
+                                          write_enable, mem_read, mem_write
+                                                          |
+                                               +----------+----------+
+                                               |                     |
+                                        [Register File]            [RAM]
+                                         data1, data2                |
+                                               |              mem_read_data
+                                               v
+                                            [ALU]
+                                               |
+                                           alu_result
+```
 
 ## Modules
 | Module | Description |
 |--------|-------------|
-| ALU | Arithmetic Logic Unit (ADD, SUB, AND, OR, XOR, NOT, SHL, SHR, SLT) |
-| Register File | 8 x 4-bit registers |
+| ALU | Arithmetic Logic Unit – 9 operations |
+| Register File | 8 × 8-bit general-purpose registers |
 | Decoder | Instruction decoder and control unit |
 | Program Counter | 16-bit PC with jump support |
-| ROM | Instruction memory (256 x 16-bit) |
-| RAM | Data memory (256 x 4-bit) |
-| CPU | Top-level integration |
+| ROM | Instruction memory (256 × 16-bit) |
+| RAM | Data memory (256 × 8-bit) |
+| CPU | Top-level integration of all modules |
 
 ## Instruction Format
 ```
-[15:12] opcode | [11:9] dst | [8:6] src1 | [5:3] src2 | [2:0] unused
+[15:12] opcode (4 bits)
+[11:9]  dst    (3 bits) - destination register
+[8:6]   src1   (3 bits) - source register 1
+[5:3]   src2   (3 bits) - source register 2
+[2:0]   unused (3 bits) - reserved for future use (immediate values)
 ```
 
 ## Supported Instructions
@@ -39,5 +66,38 @@ A simple 4-bit CPU implemented in Verilog as a portfolio project.
 | 1001 | LW  | dst = RAM[addr] |
 | 1010 | SW  | RAM[addr] = src1 |
 
+## Repository Structure
+```
+├── src/
+│   ├── ALU.v
+│   ├── CPU.v
+│   ├── RAM.v
+│   ├── ROM.v
+│   ├── decoder.v
+│   ├── program_counter.v
+│   └── register_file.v
+├── testbenches/
+│   ├── tb_ALU.v
+│   ├── tb_CPU.v
+│   ├── tb_RAM.v
+│   ├── tb_ROM.v
+│   ├── tb_decoder.v
+│   ├── tb_program_counter.v
+│   └── tb_reg_file.v
+├── program/
+│   └── program.mem
+└── README.md
+```
+
 ## Simulation
-Tested using EDA Playground with Icarus Verilog 12.0
+Tested using EDA Playground with Icarus Verilog 12.0.
+Each module has an individual testbench covering normal operation, edge cases, and reset behavior.
+
+## TODO
+- [ ] `LOADI` instruction – load immediate value into register (`LOADI R1, 42`)
+- [ ] `JUMP` instruction – functional jump using zero flag from ALU
+- [ ] `BEQ` instruction – branch if equal
+- [ ] Assembler in C – translate `.asm` files to `program.mem` automatically
+- [ ] Overflow and carry flag implementation in ALU
+- [ ] Demo program – fibonacci or factorial running on the CPU
+- [ ] Logisim Evolution visual schematic

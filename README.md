@@ -45,28 +45,6 @@ Built from scratch, module by module, with individual testbenches for each compo
 | 1001 | LW  | dst = RAM[addr] |
 | 1010 | SW  | RAM[addr] = src1 |
 
-## Repository Structure
-```
-├── src/
-│   ├── ALU.v
-│   ├── CPU.v
-│   ├── RAM.v
-│   ├── ROM.v
-│   ├── decoder.v
-│   ├── program_counter.v
-│   └── register_file.v
-├── testbenches/
-│   ├── tb_ALU.v
-│   ├── tb_CPU.v
-│   ├── tb_RAM.v
-│   ├── tb_ROM.v
-│   ├── tb_decoder.v
-│   ├── tb_program_counter.v
-│   └── tb_reg_file.v
-├── program/
-│   └── program.mem
-└── README.md
-```
 
 ## Simulation
 Tested using EDA Playground with Icarus Verilog 12.0.

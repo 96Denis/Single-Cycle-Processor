@@ -13,7 +13,7 @@ Built from scratch, module by module, with individual testbenches for each compo
 ## Modules
 | Module | Description |
 |--------|-------------|
-| ALU | Arithmetic Logic Unit – 9 operations |
+| ALU | Arithmetic Logic Unit – 11 operations |
 | Register File | 8 × 8-bit general-purpose registers |
 | Decoder | Instruction decoder and control unit |
 | Program Counter | 16-bit PC with jump support |
@@ -27,26 +27,55 @@ Built from scratch, module by module, with individual testbenches for each compo
 [11:9]  dst    (3 bits) - destination register
 [8:6]   src1   (3 bits) - source register 1
 [5:3]   src2   (3 bits) - source register 2
-[2:0]   unused (3 bits) - reserved for future use (immediate values)
+[2:0]   imm    (3 bits) - immediate value (used by LOADI)
 ```
 
 ## Supported Instructions
 | Opcode | Mnemonic | Operation |
 |--------|----------|-----------|
-| 0000 | ADD | dst = src1 + src2 |
-| 0001 | SUB | dst = src1 - src2 |
-| 0010 | AND | dst = src1 & src2 |
-| 0011 | OR  | dst = src1 \| src2 |
-| 0100 | XOR | dst = src1 ^ src2 |
-| 0101 | NOT | dst = ~src1 |
-| 0110 | SHL | dst = src1 << src2 |
-| 0111 | SHR | dst = src1 >> src2 |
-| 1000 | SLT | dst = (src1 < src2) ? 1 : 0 |
-| 1001 | LW  | dst = RAM[addr] |
-| 1010 | SW  | RAM[addr] = src1 |
+| 0000 | ADD    | dst = src1 + src2 |
+| 0001 | SUB    | dst = src1 - src2 |
+| 0010 | AND    | dst = src1 & src2 |
+| 0011 | OR     | dst = src1 \| src2 |
+| 0100 | XOR    | dst = src1 ^ src2 |
+| 0101 | NOT    | dst = ~src1 |
+| 0110 | SHL    | dst = src1 << src2 |
+| 0111 | SHR    | dst = src1 >> src2 |
+| 1000 | SLT    | dst = (src1 < src2) ? 1 : 0 |
+| 1001 | LW     | dst = RAM[addr] |
+| 1010 | SW     | RAM[addr] = src1 |
+| 1011 | LOADI  | dst = imm (load 3-bit immediate value) |
+| 1100 | JUMP   | PC = addr (unconditional jump) |
+
+## Assembler
+A simple assembler written in C translates `.asm` source files into `program.mem` binary files readable by the ROM.
+```bash
+cd assembler
+gcc assembler.c -o assembler
+.\assembler.exe program.asm ../program/program.mem
+```
+
+Example `program.asm`:
+```asm
+// load values and compute
+LOADI R1, 5
+LOADI R2, 3
+ADD R3, R1, R2
+SW R3, R0, R0
+```
+
+## Simulation
+Tested using EDA Playground with Icarus Verilog 12.0.
+Each module has an individual testbench covering normal operation, edge cases, and reset behavior.
 
 ## Repository Structure
 ```
+├── assembler/
+│   ├── assembler.c
+│   ├── assembler.exe
+│   └── program.asm
+├── program/
+│   └── program.mem
 ├── src/
 │   ├── ALU.v
 │   ├── CPU.v
@@ -63,20 +92,14 @@ Built from scratch, module by module, with individual testbenches for each compo
 │   ├── tb_decoder.v
 │   ├── tb_program_counter.v
 │   └── tb_reg_file.v
-├── program/
-│   └── program.mem
 └── README.md
 ```
 
-## Simulation
-Tested using EDA Playground with Icarus Verilog 12.0.
-Each module has an individual testbench covering normal operation, edge cases, and reset behavior.
-
 ## TODO
-- [ ] `LOADI` instruction – load immediate value into register (`LOADI R1, 42`)
-- [ ] `JUMP` instruction – functional jump using zero flag from ALU
-- [ ] `BEQ` instruction – branch if equal
-- [ ] Assembler in C – translate `.asm` files to `program.mem` automatically
+- [x] ~~`LOADI` instruction – load immediate value into register~~
+- [x] ~~`JUMP` instruction – unconditional jump~~
+- [x] ~~Assembler in C – translate `.asm` files to `program.mem` automatically~~
+- [ ] `BEQ` instruction – branch if equal (conditional jump using zero flag)
 - [ ] Overflow and carry flag implementation in ALU
 - [ ] Demo program – fibonacci or factorial running on the CPU
 - [ ] Logisim Evolution visual schematic

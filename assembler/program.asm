@@ -1,10 +1,5 @@
-// test program
-ADD R1, R2, R3
-SUB R4, R1, R2
-AND R1, R2, R3
-OR R4, R1, R2
-XOR R1, R2, R3
-NOT R1, R2
-SHL R1, R2, R3
-SHR R4, R1, R2
-SLT R1, R2, R3
+// load values and add them
+LOADI R1, 5
+LOADI R2, 3
+ADD R3, R1, R2
+// R3 should be 8

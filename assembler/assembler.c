@@ -49,6 +49,8 @@ void int_to_bits(int valuea, int num_bits,char* output) {
     output[num_bits] = '\0';
 }
 
+
+
 int main (int argc, char* argv[]) {
 
     const char* input_file = "program.asm";

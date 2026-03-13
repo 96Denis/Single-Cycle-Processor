@@ -12,6 +12,7 @@ module CPU (
     wire [2:0]  reg_write_dest;
     wire [2:0]  reg_read_src1;
     wire [2:0]  reg_read_src2;
+    wire [2:0]  immediate_value;
     wire [8:0]  alu_result;
     wire        zero;
     wire        overflow;
@@ -19,13 +20,22 @@ module CPU (
     wire        mem_write;
     wire        mem_read;
     wire        reg_write_enable;
+    wire        loadi_enable;
+    wire        jump_enable;
 
-    //instantiate all the modules
+    //mux: if loadi_enable -> immediate value to reg_write_dest, else => alu_result
+    wire [7:0] write_data_mux;
+    assign write_data_mux = loadi_enable ? {5'b0, immediate_value} : alu_result[7:0];
+
+    // jump address from instruction[11:0]
+    wire [15:0] jump_address;
+    assign jump_address = {4'b0, instruction[11:0]};
+
     program_counter PC (
         .clk(clk),
         .rst(rst),
-        .jump(1'b0), // for now, no jumps 
-        .jump_address(16'b0), //
+        .jump(jump_enable),  
+        .jump_address(jump_address), 
         .pc(pc)
     );
 
@@ -40,9 +50,12 @@ module CPU (
         .reg_write_dest(reg_write_dest),
         .reg_read_src1(reg_read_src1),
         .reg_read_src2(reg_read_src2),
+        .immediate_value(immediate_value),
         .mem_write(mem_write),
         .mem_read(mem_read),
-        .write_enable(reg_write_enable)
+        .write_enable(reg_write_enable),
+        .loadi_enable(loadi_enable),
+        .jump_enable(jump_enable)
     );
 
     register_file REG (
@@ -51,7 +64,7 @@ module CPU (
         .read_reg1(reg_read_src1),
         .read_reg2(reg_read_src2),
         .write_reg(reg_write_dest),
-        .write_data(alu_result[7:0]), 
+        .write_data(write_data_mux), 
         .write_enable(reg_write_enable),
         .read_data1(reg_data1),
         .read_data2(reg_data2)

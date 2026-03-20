@@ -68,32 +68,6 @@ SW R3, R0, R0
 Tested using EDA Playground with Icarus Verilog 12.0.
 Each module has an individual testbench covering normal operation, edge cases, and reset behavior.
 
-## Repository Structure
-```
-├── assembler/
-│   ├── assembler.c
-│   ├── assembler.exe
-│   └── program.asm
-├── program/
-│   └── program.mem
-├── src/
-│   ├── ALU.v
-│   ├── CPU.v
-│   ├── RAM.v
-│   ├── ROM.v
-│   ├── decoder.v
-│   ├── program_counter.v
-│   └── register_file.v
-├── testbenches/
-│   ├── tb_ALU.v
-│   ├── tb_CPU.v
-│   ├── tb_RAM.v
-│   ├── tb_ROM.v
-│   ├── tb_decoder.v
-│   ├── tb_program_counter.v
-│   └── tb_reg_file.v
-└── README.md
-```
 
 ## TODO
 - [x] ~~`LOADI` instruction – load immediate value into register~~

@@ -24,71 +24,104 @@ module decoder (
               write_enable = 1;
               mem_read = 0;
               mem_write = 0;
+              loadi_enable = 0; 
+              jump_enable = 0;
             end
             4'b0001: begin //SUB
               write_enable = 1;
               mem_read = 0;
               mem_write = 0;
+              loadi_enable = 0;
+              jump_enable = 0;
             end
             4'b0010: begin //AND
               write_enable = 1;
               mem_read = 0;
               mem_write = 0;
+              loadi_enable = 0;
+              jump_enable = 0;
+
             end
             4'b0011: begin //OR
               write_enable = 1;
               mem_read = 0;
               mem_write = 0;
+              loadi_enable = 0;
+              jump_enable = 0;
             end
             4'b0100: begin //XOR
               write_enable = 1;
               mem_read = 0;
               mem_write = 0;
+              loadi_enable = 0;
+              jump_enable = 0;
+
             end
             4'b0101: begin //NOT
               write_enable = 1;
               mem_read = 0;
               mem_write = 0;
+              loadi_enable = 0;
+              jump_enable = 0; 
             end
             4'b0110: begin //SHL
               write_enable = 1;
               mem_read = 0;
               mem_write = 0;
+              loadi_enable = 0;
+              jump_enable = 0;
+
             end
             4'b0111: begin //SHR
               write_enable = 1;
               mem_read = 0;
               mem_write = 0;
+              loadi_enable = 0;
+              jump_enable = 0;
             end
             4'b1000: begin //SLT
               write_enable = 1;
               mem_read = 0;
               mem_write = 0;
+              loadi_enable = 0;
+              jump_enable = 0;
             end
             4'b1001: begin //LW
               write_enable = 1;
               mem_read = 1;
               mem_write = 0;
+              loadi_enable = 0;
+              jump_enable = 0;
             end
             4'b1010: begin //SW
               write_enable = 0;
               mem_read = 0;
               mem_write = 1;
+              loadi_enable = 0;
+              jump_enable = 0;
+
             end
             4'b1011: begin // LOADI
               write_enable = 1;
               mem_read = 0;
               mem_write = 0;
+              loadi_enable = 1;
+              jump_enable = 0;
             end
             4'b1100: begin // JUMP
               write_enable = 0;
               mem_read = 0;
               mem_write = 0;
+              loadi_enable = 0;
+              jump_enable = 1;
             end
             default: begin
               write_enable = 0;
               mem_read = 0;
               mem_write = 0;
+              loadi_enable = 0;
+              jump_enable = 0;
+
             end
             endcase
     end

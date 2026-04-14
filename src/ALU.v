@@ -25,6 +25,6 @@ module ALU(
 
     assign zero = (result == 9'b0);
     assign overflow = 1'b0; // impl later
-    assign carry = 1'b0;    // impl later
+    assign carry = result[8];
 
 endmodule //ALU

@@ -50,7 +50,6 @@ void int_to_bits(int valuea, int num_bits,char* output) {
 }
 
 
-
 int main (int argc, char* argv[]) {
 
     const char* input_file = "program.asm";
@@ -71,11 +70,10 @@ int main (int argc, char* argv[]) {
 
     while (fgets(line, sizeof(line), input)) {
         line_number++;
-
         char trimmed[256];
-        sscanf(line, "%255s[^\n]", trimmed);
+        sscanf(line, "%255[^\n]", trimmed);
         if(trimmed[0] == '\0' || trimmed[0] == '\n' || trimmed[0] == '/') continue;
-
+        
         char mnemonic[16] = {0};
         char t1[16] = {0}, t2[16] = {0}, t3[16] = {0};
         int token_count = sscanf(line, "%s %s %s %s", mnemonic, t1, t2, t3);
